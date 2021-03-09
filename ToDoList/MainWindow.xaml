@@ -28,7 +28,7 @@
 			<Button x:Name="btnNewItem" Click="BtnNewItem_OnClick">New Item</Button>
 			<Button x:Name="btnRemoveItem" IsEnabled="{Binding SelectedItem, Converter={StaticResource SelectedItemValueConverter}, ElementName=lvwToDoItems}" Click="BtnRemoveItem_OnClick">Remove Item</Button>
 		</ToolBar>
-		<ListView x:Name="lvwToDoItems" Grid.Column="1" Grid.Row="2" DisplayMemberPath="Name" SelectionChanged="LvwToDoItems_OnSelectionChanged">
+		<ListView x:Name="lvwToDoItems" Grid.Column="1" Grid.Row="2" DisplayMemberPath="Name" ItemsSource="{Binding ToDoItems, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
 			<ListView.DataContext>
 				<local:ToDoItem/>
 			</ListView.DataContext>

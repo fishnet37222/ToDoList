@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
+using ToDoList.Annotations;
 
 namespace ToDoList
 {
-	public partial class MainWindow
+	public sealed partial class MainWindow : INotifyPropertyChanged
 	{
 		public static readonly DependencyProperty ToDoItemsProperty = DependencyProperty.Register("ToDoItems",
 			typeof(ObservableCollection<ToDoItem>), typeof(MainWindow), new FrameworkPropertyMetadata());
 
-		private ObservableCollection<ToDoItem> ToDoItems
+		// ReSharper disable once MemberCanBePrivate.Global
+		public ObservableCollection<ToDoItem> ToDoItems
 		{
 			get => (ObservableCollection<ToDoItem>)GetValue(ToDoItemsProperty);
 
@@ -37,11 +40,6 @@ namespace ToDoList
 					IsDone = true
 				}
 			};
-			this.lvwToDoItems.ItemsSource = this.ToDoItems;
-		}
-
-		private void LvwToDoItems_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
 		}
 
 		private void BtnRemoveItem_OnClick(object sender, RoutedEventArgs e)
@@ -57,6 +55,14 @@ namespace ToDoList
 			{
 				this.ToDoItems.Add(dlg.NewItem);
 			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		[NotifyPropertyChangedInvocator, UsedImplicitly, System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
